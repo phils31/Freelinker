@@ -1,0 +1,105 @@
+import Head from "next/head";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
+
+const services = [
+  {
+    id: 1,
+    name: "Logo Designer",
+    color: "bg-blue-200",
+    affiliateLink: "https://example.com/logo-affiliate",
+    payout: "$20 per referral"
+  },
+  {
+    id: 2,
+    name: "Content Writer",
+    color: "bg-green-200",
+    affiliateLink: "https://example.com/content-affiliate",
+    payout: "$15 per signup"
+  },
+  {
+    id: 3,
+    name: "Video Editor",
+    color: "bg-yellow-200",
+    affiliateLink: "https://example.com/video-affiliate",
+    payout: "$25 flat rate"
+  },
+];
+
+export default function WorkflowBuilder() {
+  const [workflow, setWorkflow] = useState([]);
+
+  const addToWorkflow = (service) => {
+    setWorkflow([...workflow, service]);
+  };
+
+  return (
+    <>
+      <Head>
+        <title>Affiliate Workflow Builder | FreeLinker</title>
+        <meta
+          name="description"
+          content="Build and share automated workflows using affiliate freelance services. Earn commissions with FreeLinker."
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="keywords" content="affiliate, workflow builder, freelance, commission, automation, freelinker" />
+        <meta name="author" content="FreeLinker Team" />
+        <meta property="og:title" content="FreeLinker - Affiliate Workflow Builder" />
+        <meta property="og:description" content="Automate your freelance referrals and earn with affiliate workflows." />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:url" content="https://freelinker.com" />
+      </Head>
+
+      <div className="p-6 space-y-6">
+        <h1 className="text-3xl font-bold">Affiliate Workflow Builder</h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {services.map((service) => (
+            <Card
+              key={service.id}
+              className={`cursor-pointer ${service.color}`}
+              onClick={() => addToWorkflow(service)}
+            >
+              <CardContent className="p-4 space-y-2 text-center font-medium">
+                <div className="text-lg">{service.name}</div>
+                <div className="text-sm text-gray-600">{service.payout}</div>
+                <a
+                  href={service.affiliateLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 underline text-sm"
+                >
+                  Affiliate Link
+                </a>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold mb-4">Your Workflow</h2>
+          <div className="flex items-center space-x-4 overflow-x-auto p-2">
+            {workflow.map((service, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className={`rounded-xl px-4 py-2 ${service.color} font-semibold`}
+              >
+                {service.name}
+              </motion.div>
+            ))}
+            {workflow.length > 1 && <ArrowRight className="text-gray-500" />}
+          </div>
+        </div>
+
+        <Button className="mt-6">Save Workflow</Button>
+      </div>
+    </>
+  );
+}
